@@ -24,8 +24,8 @@ cd /root/.openclaw/workspace/dnd-dm-stack
 # SSH into your Oracle server
 ssh ubuntu@your-oracle-ip
 
-# Clone the repo
-git clone https://github.com/RocketRacer6/dnd-dm-stack.git
+# Clone the repo (specify main branch!)
+git clone -b main https://github.com/RocketRacer6/dnd-dm-stack.git
 cd dnd-dm-stack
 ```
 
@@ -186,7 +186,7 @@ docker-compose down -v
 ### To Pull Changes from GitHub
 ```bash
 cd dnd-dm-stack
-git pull origin master
+git pull origin main
 docker-compose down
 docker-compose up -d --build
 ```
@@ -200,7 +200,7 @@ git push origin master
 
 # Then on Oracle server, pull and rebuild
 cd dnd-dm-stack
-git pull origin master
+git pull origin main
 docker-compose down
 docker-compose up -d --build
 ```
