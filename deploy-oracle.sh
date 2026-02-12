@@ -12,17 +12,15 @@ echo "  2. You have a Telegram Bot Token (get from @BotFather)"
 echo "  3. Groq API key is already configured ✅"
 echo ""
 
-# Prompt for Oracle server details
-read -p "🖥️  Oracle server username (default: ubuntu): " ORACLE_USER
-ORACLE_USER=${ORACLE_USER:-ubuntu}
+# Oracle server details (pre-configured)
+ORACLE_USER="opc"
+ORACLE_IP="64.181.201.232"
+SSH_KEY="/root/ssh_key.txt"
 
-read -p "🌐 Oracle server IP address: " ORACLE_IP
-
-if [ -z "$ORACLE_IP" ]; then
-    echo "❌ Oracle server IP is required!"
-    exit 1
-fi
-
+echo "🖥️  Oracle Server:"
+echo "   User: $ORACLE_USER"
+echo "   IP: $ORACLE_IP"
+echo "   SSH Key: $SSH_KEY"
 echo ""
 echo "📤 Transferring files to $ORACLE_USER@$ORACLE_IP..."
 
@@ -34,11 +32,14 @@ tar -czf dnd-dm-stack.tar.gz \
     .
 
 # Transfer via scp
-scp dnd-dm-stack.tar.gz $ORACLE_USER@$ORACLE_IP:~/
+scp -i $SSH_KEY dnd-dm-stack.tar.gz $ORACLE_USER@$ORACLE_IP:~/
 
 echo "✅ Files transferred!"
 echo ""
 echo "📥 On Oracle server, run these commands:"
+echo ""
+echo "   # SSH into Oracle server"
+echo "   ssh -i $SSH_KEY $ORACLE_USER@$ORACLE_IP"
 echo ""
 echo "   # Extract files"
 echo "   tar -xzf dnd-dm-stack.tar.gz"
