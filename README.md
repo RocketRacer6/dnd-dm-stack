@@ -67,7 +67,7 @@ docker-compose ps
 
 ### 5. Test the Bot
 
-1. Open Telegram and search for your bot
+1. Open Telegram and search for **@DnDgameBot**
 2. Send `/start`
 3. Start a campaign: `/newgame Curse of Strahd`
 4. Roll some dice: `/roll d20`

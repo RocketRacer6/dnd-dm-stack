@@ -5,7 +5,7 @@
 ### 1️⃣ Get Your Bot Token (Telegram)
 - Open Telegram, search **@BotFather**
 - Send `/newbot`
-- Name it (e.g., "Ian's D&D DM")
+- Name it: **D&D_dm** (username: @DnDgameBot)
 - Copy the **API token**
 - Paste it into `.env` file
 
@@ -36,7 +36,7 @@ cd /root/.openclaw/workspace/dnd-dm-stack
 
 ## First Game
 
-1. **Open Telegram**, find your bot
+1. **Open Telegram**, search for **@DnDgameBot**
 2. Send `/start`
 3. Create campaign: `/newgame The Lost Mine of Phandelver`
 4. Roll dice: `/roll d20`
