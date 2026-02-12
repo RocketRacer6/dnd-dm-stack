@@ -67,7 +67,7 @@ docker-compose ps
 docker-compose logs -f bot
 
 # Test bot response
-# Open Telegram, send /help to your bot
+# Open Telegram, search for @DnDgameBot, send /help
 ```
 
 ---

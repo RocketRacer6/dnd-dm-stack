@@ -114,7 +114,7 @@ docker-compose ps
 docker-compose logs -f bot
 
 # Test bot
-# Open Telegram, find your bot, send /start
+# Open Telegram, search for @DnDgameBot, send /start
 ```
 
 ---
