@@ -25,14 +25,35 @@ echo ""
 echo "📤 Transferring files to $ORACLE_USER@$ORACLE_IP..."
 
 # Create tarball with everything except backups/data
+echo "📦 Creating tarball..."
 tar -czf dnd-dm-stack.tar.gz \
     --exclude='backups/*' \
     --exclude='data/*' \
     --exclude='.git' \
     .
 
+# Verify tarball was created
+if [ ! -f dnd-dm-stack.tar.gz ]; then
+    echo "❌ Failed to create tarball!"
+    exit 1
+fi
+
+# Show tarball size
+TAR_SIZE=$(ls -lh dnd-dm-stack.tar.gz | awk '{print $5}')
+echo "✅ Tarball created (size: $TAR_SIZE)"
+echo ""
+
 # Transfer via scp
+echo "📤 Transferring to Oracle server..."
 scp -i $SSH_KEY dnd-dm-stack.tar.gz $ORACLE_USER@$ORACLE_IP:~/
+
+# Verify transfer completed
+if [ $? -eq 0 ]; then
+    echo "✅ Transfer completed successfully"
+else
+    echo "❌ Transfer failed!"
+    exit 1
+fi
 
 echo "✅ Files transferred!"
 echo ""
@@ -57,10 +78,9 @@ echo ""
 echo "   # Start the stack"
 echo "   ./setup.sh"
 echo ""
-echo "🧹 Cleaning up local tarball..."
-rm dnd-dm-stack.tar.gz
-
 echo ""
-echo "✅ Deployment files ready!"
+echo "🧹 Cleaning up local tarball..."
+rm -f dnd-dm-stack.tar.gz
+echo "✅ Cleanup complete"
 echo ""
 echo "🎲 Next step: SSH into Oracle server and run the commands above!"

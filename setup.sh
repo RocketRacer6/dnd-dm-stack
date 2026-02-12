@@ -12,13 +12,19 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-# Check if Docker Compose is installed
-if ! command -v docker-compose &> /dev/null; then
-    echo "❌ Docker Compose is not installed. Please install Docker Compose first."
+# Check if Docker Compose is installed (old or new version)
+if command -v docker-compose &> /dev/null; then
+    DOCKER_COMPOSE="docker-compose"
+    echo "✅ Docker Compose (standalone) found"
+elif docker compose version &> /dev/null 2>&1; then
+    DOCKER_COMPOSE="docker compose"
+    echo "✅ Docker Compose (plugin) found"
+else
+    echo "❌ Docker Compose is not installed."
+    echo "   Visit: https://docs.docker.com/get-docker/"
     exit 1
 fi
 
-echo "✅ Docker and Docker Compose found"
 echo ""
 
 # Create .env file if it doesn't exist
@@ -52,11 +58,11 @@ echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo ""
     echo "🔨 Building Docker images..."
-    docker-compose build
+    $DOCKER_COMPOSE build
 
     echo ""
     echo "🚀 Starting services..."
-    docker-compose up -d
+    $DOCKER_COMPOSE up -d
 
     echo ""
     echo "⏳ Waiting for services to be healthy..."
@@ -66,17 +72,17 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "✅ Setup complete!"
     echo ""
     echo "📊 Container Status:"
-    docker-compose ps
+    $DOCKER_COMPOSE ps
     echo ""
     echo "📝 Next Steps:"
     echo "   1. Find your bot on Telegram and send /start"
     echo "   2. Create a campaign: /newgame <name>"
     echo "   3. Roll some dice: /roll d20"
     echo ""
-    echo "📖 View logs: docker-compose logs -f bot"
+    echo "📖 View logs: $DOCKER_COMPOSE logs -f bot"
     echo ""
 else
     echo ""
     echo "⏸️  Setup paused. Edit .env and run:"
-    echo "   docker-compose up -d --build"
+    echo "   $DOCKER_COMPOSE up -d --build"
 fi
