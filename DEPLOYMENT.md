@@ -16,7 +16,7 @@
 # On local machine (where you have the stack)
 cd /root/.openclaw/workspace/dnd-dm-stack
 ./deploy-oracle.sh
-# Follow prompts to transfer files to Oracle server
+# Oracle server details are pre-configured (opc@64.181.201.232)
 ```
 
 **Option B: Manual transfer**

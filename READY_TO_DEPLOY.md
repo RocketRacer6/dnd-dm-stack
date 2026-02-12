@@ -17,9 +17,10 @@ cd /root/.openclaw/workspace/dnd-dm-stack
 ./deploy-oracle.sh
 ```
 
-**Then follow prompts to:**
-1. Enter Oracle server username (default: ubuntu)
-2. Enter Oracle server IP address
+**Oracle server details are pre-configured:**
+- User: opc
+- IP: 64.181.201.232
+- SSH key: /root/ssh_key.txt
 
 **Script will:**
 - Transfer all files to Oracle server
