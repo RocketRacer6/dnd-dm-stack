@@ -9,7 +9,17 @@
 
 ## 📥 Deploy to Oracle Server
 
-### Step 1: Clone Repository
+### Step 1: Transfer Files to Oracle
+
+**Option A: Use deployment helper (Easiest)**
+```bash
+# On local machine (where you have the stack)
+cd /root/.openclaw/workspace/dnd-dm-stack
+./deploy-oracle.sh
+# Follow prompts to transfer files to Oracle server
+```
+
+**Option B: Manual transfer**
 ```bash
 # SSH into your Oracle server
 ssh ubuntu@your-oracle-ip
@@ -21,22 +31,19 @@ cd dnd-dm-stack
 
 ### Step 2: Configure Environment
 ```bash
-# Copy env template
-cp .env.example .env
-
-# Edit with your credentials
+# Edit env file (Groq key is already configured!)
 nano .env
 ```
 
 **Add these values:**
 ```bash
-# Telegram Bot Token (from @BotFather)
+# Telegram Bot Token (from @BotFather) - ADD THIS
 TELEGRAM_BOT_TOKEN=your_bot_token_here
 
-# Groq API Key (from console.groq.com)
-AI_API_KEY=gsk_your_groq_key_here
+# Groq API Key - ALREADY CONFIGURED ✅
+# (Pre-configured in .env file - ready to use!)
 
-# Database Password (CHANGE THIS!)
+# Database Password - CHANGE FROM DEFAULT! ⚠️
 DB_PASSWORD=your_secure_password_here
 ```
 
@@ -51,6 +58,19 @@ That's it! The bot will:
 - Start PostgreSQL
 - Start Telegram bot
 - Configure auto-backups
+
+---
+
+## ✅ Pre-Configured
+
+**Groq API Key:** Already configured in `.env` file
+- Ready to use LLaMA 3.1 70B model
+- Free tier, fast inference
+- No action needed
+
+**Still need:**
+- Telegram Bot Token (from @BotFather)
+- Change `DB_PASSWORD` from default
 
 ---
 
