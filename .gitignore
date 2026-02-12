@@ -1,0 +1,29 @@
+# Environment variables (contain secrets)
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Backup files
+backups/*.sql.gz
+backups/*.tar.gz
+
+# Data directories (runtime data)
+data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

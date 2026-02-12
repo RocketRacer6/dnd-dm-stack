@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: dnd-dm-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dnd_game
+      POSTGRES_USER: dnd_master
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-dnd_secret_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    networks:
+      - dnd-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dnd_master"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Telegram Bot
+  bot:
+    build: ./bot
+    container_name: dnd-dm-bot
+    restart: unless-stopped
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      DATABASE_URL: postgresql://dnd_master:${DB_PASSWORD:-dnd_secret_password}@db:5432/dnd_game
+      AI_API_KEY: ${AI_API_KEY}
+      AI_API_URL: ${AI_API_URL:-https://api.groq.com/openai/v1}
+      AI_MODEL: ${AI_MODEL:-llama-3.1-70b-versatile}
+      TZ: America/Chicago
+    volumes:
+      - ./bot:/app
+      - ./data:/app/data
+      - ./backups:/backups
+    networks:
+      - dnd-network
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Backup Helper (runs scheduled tasks)
+  backup:
+    image: postgres:15-alpine
+    container_name: dnd-dm-backup
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dnd_game
+      POSTGRES_USER: dnd_master
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-dnd_secret_password}
+      BACKUP_SCHEDULE: "59 23 * * *"  # 23:59 CST (converted to UTC in cron)
+      TZ: America/Chicago
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+      - ./scripts:/scripts
+      - ./data:/data
+    networks:
+      - dnd-network
+    entrypoint: ["/scripts/backup-entrypoint.sh"]
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  dnd-network:
+    driver: bridge
