@@ -236,6 +236,22 @@ docker-compose exec db pg_isready -U dnd_master
 docker-compose restart db
 ```
 
+### Tar.gz Extraction Failed
+If you see "gzip: stdin: unexpected end of file":
+```bash
+# The tarball was corrupted or incomplete. Re-run deployment:
+
+# On local machine
+cd /root/.openclaw/workspace/dnd-dm-stack
+./deploy-oracle.sh
+
+# Then on Oracle server
+ssh -i /root/ssh_key.txt opc@64.181.201.232
+tar -xzf dnd-dm-stack.tar.gz
+cd dnd-dm-stack
+./setup.sh
+```
+
 ### Backup Not Running
 ```bash
 # Check backup container
